@@ -1,0 +1,37 @@
+# Version of the docker-compose, look at the internet to specify
+# the correct version you want
+
+version: "3.8"
+
+# Services for the docker-compose when you want to up all of your
+# containers
+# Content of the services are nested service with all the 
+# configurations of it like port mapping, volumes and so on
+
+services:
+  api:
+    # build key specify the relative path where the
+    # Dockerfile is
+    build: ./api
+    # specify the name of the container
+    container_name: api_c
+    # bind ports from the host to the container
+    ports:
+      - '4000:4000'
+    volumes:
+      # specify volumes from the host:container
+      # if no host is specify, the volume is made
+      # anonymously to keep persistence on it
+      - ./api:/app
+      - /app/node_modules
+  myblog:
+    build: ./myblog
+    container_name: myblog_c
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./myblog:/app
+      # This volume being anonymous HAS to be in absolute path
+      - /app/node_modules
+    stdin_open: true
+    tty: true
